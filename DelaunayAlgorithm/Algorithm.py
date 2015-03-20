@@ -1,7 +1,7 @@
 __author__ = 'cata'
 
 from BigTriangle import bigTriangle
-from FindTriangle import findTriangle
+from FindTriangle import findTriangle, insideTriangle
 from random import shuffle
 from Legalize import legalizeEdge
 import Triangle
@@ -22,8 +22,9 @@ def delaunay(points):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene (ojo, por ahora me bypasseo el problema de que
         # este en una arista)
         conT = findTriangle(triangulation,points[i])
+        [inside,conEdge] = insideTriangle(conT,points[i])
 
-        if esta dentro del triangulo
+        if inside:
             #Se crean tres nuevos triangulos
             newTriangle1 = Triangle(points[i],conT.p1,conT.p2)
             newTriangle2 = Triangle(points[i],conT.p2,conT.p3)
@@ -46,6 +47,15 @@ def delaunay(points):
             legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1,triangulation)
             legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2,triangulation)
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
+
+        else:
+            #El punto se encuentra en una arista
+            conT2 = conT.getNeighbourFromEdge(conEdge)
+
+            #newTriangle1 = Triangle(points[i],)
+            #newTriangle2 =
+            #newTriangle3 =
+            #newTriangle4 =
 
 
 

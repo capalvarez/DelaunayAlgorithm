@@ -31,7 +31,22 @@ def findTriangle(triangles,point):
         if inTriangle(triangles[i],point):
             return triangles[i]
 
-    #Por ahora no veo este caso
-    return 0
+
+def insideTriangle(triangle,point):
+    edges = triangle.getEdges()
+
+    #Verificar aristas en orden, de tal forma que si una falla no continuar
+    if orientTest((edges[0].p1,edges[0].p2,point)) == 0:
+        return [False,edges[0]]
+
+    if orientTest((edges[1].p1,edges[1].p2,point)) == 0:
+        return [False,edges[1]]
+
+    if orientTest((edges[2].p1,edges[2].p2,point)) == 0:
+        return [False,edges[2]]
+
+    return [True,None]
+
+
 
 
