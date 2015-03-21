@@ -2,6 +2,7 @@ __author__ = 'cata'
 
 from Edge import *
 from Point import *
+from Tkinter import *
 
 class Triangle:
     def __init__(self,p1,p2,p3):
@@ -12,6 +13,11 @@ class Triangle:
         self.n1 = None
         self.n2 = None
         self.n3 = None
+
+    def draw(self,canvas):
+        Edge(self.p1,self.p2).draw(canvas)
+        Edge(self.p2,self.p3).draw(canvas)
+        Edge(self.p3,self.p1).draw(canvas)
 
     def getPoints(self):
         return [self.p1,self.p2,self.p3]
@@ -57,15 +63,30 @@ class Triangle:
         else:
             return Edge(self.p1,self.p2)
 
+
+    def __str__(self):
+        return str(self.p1) + str(self.p2) + str(self.p3)
+
 if __name__ == '__main__':
-    point1 = Point2D(0,0)
-    point2 = Point2D(1,0)
-    point3 = Point2D(1,1)
+    point1 = Point2D(50,50)
+    point2 = Point2D(50,200)
+    point3 = Point2D(400,200)
 
     edge = Edge(point1,point2)
     triangle = Triangle(point1,point2,point3)
 
-    print triangle.findThirdPoint(edge)
+    #Proceso de dibujado
+    window = Tk()
+    frame = Frame(window)
+
+    frame.pack()
+
+    canvas = Canvas(window,width=600,height=400,bg="white")
+    triangle.draw(canvas)
+    canvas.pack()
+
+    window.mainloop()
+
 
 
 

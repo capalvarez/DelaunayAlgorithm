@@ -13,3 +13,6 @@ class Point2D:
 
     def __str__(self):
         return "(" + str(self.x) + "," + str(self.y) + ")"
+
+    def draw(self,canvas):
+        canvas.create_oval(self.x,self.y,self.x + 5, self.y + 5, fill = "black")

@@ -6,11 +6,11 @@ def bigTriangle(pointList,perc):
     #Encargado de devolver los tres puntos que forman el triangulo inicial del algoritmo
     (up,down,right,left) = findCorners(pointList)
 
-    x1 = right.getX()*10
-    y1 = up.getY()*10
+    x1 = right*2
+    y1 = up*2
 
-    x2 = left.getX()*10
-    y2 = down.getY()*10
+    x2 = left*2
+    y2 = down*2
 
     leftDownPoint = Point2D(x2 - (x1 - x2)*perc, y2)
     rightDownPoint = Point2D(x1 + (x1 - x2)*perc, y1)
@@ -31,10 +31,10 @@ def findCorners(pointList):
     left = pointList[0].getX()
 
     for i in range(len(pointList)):
-        if up < pointList[i].getY():
+        if up > pointList[i].getY():
             up = pointList[i].getY()
 
-        if down > pointList[i].getY():
+        if down < pointList[i].getY():
             down = pointList[i].getY()
 
         if right < pointList[i].getX():
@@ -44,9 +44,5 @@ def findCorners(pointList):
             left = pointList[i].getX()
 
     return (up, down, right, left)
-
-if __name__ == '__main__':
-    points = [Point2D(0,0),Point2D(1,1)]
-    print findCorners(points)
 
 
