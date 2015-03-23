@@ -6,22 +6,21 @@ def bigTriangle(pointList,perc):
     #Encargado de devolver los tres puntos que forman el triangulo inicial del algoritmo
     (up,down,right,left) = findCorners(pointList)
 
-    x1 = right*2
-    y1 = up*2
+    x1 = right*1.2
+    y1 = up*1.2
 
-    x2 = left*2
-    y2 = down*2
+    x2 = left*0.8
+    y2 = down*0.8
 
-    leftDownPoint = Point2D(x2 - (x1 - x2)*perc, y2)
-    rightDownPoint = Point2D(x1 + (x1 - x2)*perc, y1)
+    leftUpPoint = Point2D(x2 - (x1 - x2)*perc, y1)
+    rightUpPoint = Point2D(x1 + (x1 - x2)*perc, y1)
 
-    upXCoord = (rightDownPoint.getX() - leftDownPoint.getX())/2
-    slope = (y1 - y2)/(upXCoord - rightDownPoint.getX())
+    upXCoord = (rightUpPoint.getX() - leftUpPoint.getX())/2
+    slope = (y1 - y2)/(leftUpPoint.getX() - x2)
 
-    upPoint = Point2D(upXCoord, y1 + slope*(upXCoord - y1))
+    downPoint = Point2D(upXCoord, y1 + slope*(upXCoord - leftUpPoint.getX()))
 
-    return Triangle(upPoint,leftDownPoint,rightDownPoint)
-
+    return Triangle(downPoint,rightUpPoint,leftUpPoint)
 
 def findCorners(pointList):
     #Encuentra las coordenadas mas a la izq, der, arriba y abajo (para encontrar el cuadrado cobertor de los puntos)
@@ -31,10 +30,10 @@ def findCorners(pointList):
     left = pointList[0].getX()
 
     for i in range(len(pointList)):
-        if up > pointList[i].getY():
+        if up < pointList[i].getY():
             up = pointList[i].getY()
 
-        if down < pointList[i].getY():
+        if down > pointList[i].getY():
             down = pointList[i].getY()
 
         if right < pointList[i].getX():

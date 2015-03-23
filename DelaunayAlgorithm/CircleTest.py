@@ -18,4 +18,4 @@ def circleTest(a,b,c,d):
     p32 = c.getY() - d.getY()
     p33 = (c.getX() - d.getX())**2 + (c.getY() - d.getY())**2
 
-    return -1*sign(p11*(p22*p33 - p32*p23) - p21*(p12*p33 - p32*p13) + p31*(p12*p23 - p13*p22))
+    return sign(p11*(p22*p33 - p32*p23) - p21*(p12*p33 - p32*p13) + p31*(p12*p23 - p13*p22))

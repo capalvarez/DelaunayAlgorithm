@@ -1,8 +1,8 @@
 __author__ = 'cata'
 
 from CircleTest import circleTest
-import Triangle
-import Edge
+from Triangle import Triangle
+from Edge import Edge
 
 def legalizeEdge(point,edge,triangle,triangulation):
     #Revisa localmente si el triangulo generado es o no Delaunay; si no lo es, hace flip y se propaga a los vecinos

@@ -1,6 +1,6 @@
 __author__ = 'cata'
 
-from Edge import *
+from Edge import Edge
 from Point import *
 from Tkinter import *
 
@@ -18,6 +18,9 @@ class Triangle:
         Edge(self.p1,self.p2).draw(canvas)
         Edge(self.p2,self.p3).draw(canvas)
         Edge(self.p3,self.p1).draw(canvas)
+
+    def getEdges(self):
+        return [Edge(self.p1,self.p2),Edge(self.p2,self.p3),Edge(self.p3,self.p1)]
 
     def getPoints(self):
         return [self.p1,self.p2,self.p3]
@@ -45,15 +48,17 @@ class Triangle:
         neighbours = [self.n1,self.n2,self.n3]
 
         for i in (0,2):
-            if neighbours[i].isEdge(edge):
+            if neighbours[i]!=None and neighbours[i].isEdge(edge):
                 return neighbours[i]
 
     def isEdge(self,edge):
         points = self.getPoints()
-        points.remove(edge.p1)
-        points.remove(edge.p2)
 
-        return len(points) > 0
+        if edge.p1 in points:
+            if edge.p2 in points:
+                return True
+
+        return False
 
     def getEdgeWithoutPoint(self,point):
         if point == self.p1:
@@ -63,6 +68,12 @@ class Triangle:
         else:
             return Edge(self.p1,self.p2)
 
+    def getThirdPoint(self,edge):
+        points = self.getPoints()
+        points.remove(edge.p1)
+        points.remove(edge.p2)
+
+        return points[0]
 
     def __str__(self):
         return str(self.p1) + str(self.p2) + str(self.p3)
