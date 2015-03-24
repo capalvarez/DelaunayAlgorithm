@@ -18,9 +18,7 @@ def delaunay(points):
     #Ir agregando los puntos a la triangulacion uno o uno
     for i in range(0,len(points)):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene 
-
-	#Estoy loopeando aqui =(        
-	conT = findTriangle(triangulation,points[i])
+        conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
 
 	print "holi"

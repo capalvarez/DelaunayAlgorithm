@@ -8,9 +8,6 @@ def legalizeEdge(point,edge,triangle,triangulation):
     #Revisa localmente si el triangulo generado es o no Delaunay; si no lo es, hace flip y se propaga a los vecinos
     neighbour = triangle.getNeighbourFromEdge(edge)
 
-    if neighbour is None:
-	return
-
     if circleTest(point,edge.p1,edge.p2,neighbour.getThirdPoint(edge)):
         #Hacer intercambio de diagonales
         newTriangles = flipEdge(triangle,neighbour,edge)
