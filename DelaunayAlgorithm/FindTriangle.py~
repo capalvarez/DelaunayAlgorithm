@@ -30,8 +30,6 @@ def findTriangle(triangles,point):
     while i < len(triangles):
         if inTriangle(triangles[i],point):
             return triangles[i]
-	i = i + 1
-
 
 
 def insideTriangle(triangle,point):

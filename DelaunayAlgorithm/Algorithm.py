@@ -17,13 +17,10 @@ def delaunay(points):
 
     #Ir agregando los puntos a la triangulacion uno o uno
     for i in range(0,len(points)):
-        #Tomar un nuevo punto y encontrar el triangulo que lo contiene 
-
-	#Estoy loopeando aqui =(        
+        #Tomar un nuevo punto y encontrar el triangulo que lo contiene      
 	conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
 
-	print "holi"
         if inside:
             #Se crean tres nuevos triangulos
             newTriangle1 = Triangle(points[i],conT.p1,conT.p2)
@@ -43,12 +40,10 @@ def delaunay(points):
             #Incluir los nuevos triangulos en la triangulacion
             triangulation = triangulation + newTriangles
 
-	    print "aaaa"
             #Legalizar los nuevos triangulos
             legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1,triangulation)
             legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2,triangulation)
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
-	    print "bbbbb"
 
         else:
             #El punto se encuentra en una arista
