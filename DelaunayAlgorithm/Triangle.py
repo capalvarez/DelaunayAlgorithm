@@ -93,17 +93,14 @@ class Triangle:
 			return edges
 
     def notifyNeighbours(self,newNeighbours):
-        neighbour1 = self.getNeighbourFromEdge(Edge(self.p1,self.p2))
-        if neighbour1 is not None:
-            neighbour1.setNeighbourByEdge(Edge(self.p1,self.p2),newNeighbours[0])
+        if self.n1 is not None:
+            self.n1.setNeighbourByEdge(Edge(self.p1,self.p2),newNeighbours[0])
 
-        neighbour2 = self.getNeighbourFromEdge(Edge(self.p2,self.p3))
-        if neighbour2 is not None:
-            neighbour2.setNeighbourByEdge(Edge(self.p2,self.p3),newNeighbours[1])
+        if self.n2 is not None:
+            self.n2.setNeighbourByEdge(Edge(self.p2,self.p3),newNeighbours[1])
 
-        neighbour3 = self.getNeighbourFromEdge(Edge(self.p3,self.p1))
-        if neighbour3 is not None:
-            neighbour3.setNeighbourByEdge(Edge(self.p3,self.p1),newNeighbours[2])
+        if self.n3 is not None:
+            self.n3.setNeighbourByEdge(Edge(self.p3,self.p1),newNeighbours[2])
 
     def setNeighbourByEdge(self,edge,newNeighbour):
         neighbours = self.getNeighbours()
@@ -115,6 +112,9 @@ class Triangle:
 
     def __str__(self):
         return str(self.p1) + str(self.p2) + str(self.p3)
+
+    def printNeighbours(self):
+        print "vecinos: " + str(self.n1) + "  " + str(self.n2) + "   " + str(self.n3)
 
 
 

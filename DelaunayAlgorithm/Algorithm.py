@@ -16,7 +16,7 @@ def delaunay(points,canvas):
     triangulation = [baseTriangle]
 
     #Ir agregando los puntos a la triangulacion uno o uno
-    for i in range(0,len(points)):
+    for i in range(0,4):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene      
         conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
@@ -97,6 +97,9 @@ if __name__ == '__main__':
 
     for i in range(0,len(triangulation)):
 	    triangulation[i].draw(canvas,"blue")
+
+    for i in range(0,len(triangulation)):
+        triangulation[i].printNeighbours()
 
     canvas.pack()
     window.mainloop()
