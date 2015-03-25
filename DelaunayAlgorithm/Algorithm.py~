@@ -8,18 +8,20 @@ from Point import Point2D
 from Triangle import Triangle 
 from Tkinter import *
 
-def delaunay(points):
+def delaunay(points,canvas):
     #Encontrar el triangulo inicial de la triangulacion
-    baseTriangle = bigTriangle(points,0.25)
+    baseTriangle = bigTriangle(points,0.5)
 
     #Incluir el triangulo ficticio en la triangulacion, se debe eliminar posteriormente
     triangulation = [baseTriangle]
 
     #Ir agregando los puntos a la triangulacion uno o uno
-    for i in range(0,len(points)):
+    for i in range(0,1):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene      
 	conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
+	
+	conT.draw(canvas,"red")
 
         if inside:
             #Se crean tres nuevos triangulos
@@ -41,9 +43,9 @@ def delaunay(points):
             triangulation = triangulation + newTriangles
 
             #Legalizar los nuevos triangulos
-            legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1,triangulation)
-            legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2,triangulation)
-            legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
+            legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1)
+            legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
+            legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3)
 
         else:
             #El punto se encuentra en una arista
@@ -69,10 +71,10 @@ def delaunay(points):
             triangulation = triangulation + newTriangles
 
 	    #Legalizar los nuevos triangulos
-            legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1,triangulation)
-	    legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2,triangulation)
-            legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
-            legalizeEdge(points[i],newTriangle4.getEdgeWithoutPoint(points[i]),newTriangle4,triangulation)
+            legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1)
+	    legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
+            legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3)
+            legalizeEdge(points[i],newTriangle4.getEdgeWithoutPoint(points[i]),newTriangle4)
         
 	#Eliminar los puntos que conforman al triangulo contenedor de los puntos y las aristas que los conectan
 	#AAAAAH, como? xD
@@ -82,19 +84,18 @@ def delaunay(points):
 if __name__ == '__main__':
 	points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100)]
 
-	triangulation = delaunay(points,canvas)
-
 	window = Tk()
 	frame = Frame(window)
 	frame.pack()
 
 	canvas = Canvas(window,width=600,height=400,bg="white")
+	triangulation = delaunay(points,canvas)
 
 	for i in range(0,len(points)):
 		points[i].draw(canvas)
 
 	for i in range(0,len(triangulation)):
-		triangulation[i].draw(canvas)
+		triangulation[i].draw(canvas,"blue")
 
 	canvas.pack()
 	window.mainloop()

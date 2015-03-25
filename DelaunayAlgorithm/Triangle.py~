@@ -37,6 +37,11 @@ class Triangle:
         self.n2 = n2
         self.n3 = n3
 
+    def setPoints(self,p1,p2,p3):
+        self.p1 = p1
+        self.p2 = p2
+        self.p3 = p3
+
     def findThirdPoint(self,edge):
         points = self.getPoints()
         points.remove(edge.p1)
@@ -74,6 +79,16 @@ class Triangle:
         points.remove(edge.p2)
 
         return points[0]
+
+
+    def getDifferentEdges(self,newEdge):
+	edges = self.getEdges()
+        
+        for i in range(0,len(edges)):
+		if edges[i].equals(newEdge):
+			edges.remove(edges[i])
+			return edges
+
 
     def __str__(self):
         return str(self.p1) + str(self.p2) + str(self.p3)
