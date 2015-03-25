@@ -9,20 +9,21 @@ def legalizeEdge(point,edge,triangle):
     neighbour = triangle.getNeighbourFromEdge(edge)   
     	
     if neighbour is None:
-	return
+         return
 
-    if circleTest(point,edge.p1,edge.p2,neighbour.getThirdPoint(edge)):
+    circleRes = circleTest(point,edge.p1,edge.p2,neighbour.getThirdPoint(edge))
+    print circleRes
+
+    if  circleRes > 0:
         #Hacer intercambio de diagonales
         newEdge = flipEdge(triangle,neighbour,edge)
       
         #Se deben legalizar los dos nuevos triangulos, por lo que se requiere informacion de ellos
-	edgesT = triangle.getDifferentEdges(newEdge)
-	edgesN = neighbour.getDifferentEdges(newEdge)   
+        edgesT = triangle.getDifferentEdges(newEdge)
+        edgesN = neighbour.getDifferentEdges(newEdge)
 
-        legalizeEdge(point,edgesT[0],triangle)
-        legalizeEdge(point,edgesT[1],triangle)
-        legalizeEdge(point,edgesN[0],neighbour)
-        legalizeEdge(point,edgesN[1],neighbour)
+        legalizeEdge(point,triangle.getEdgeWithoutPoint(point),triangle)
+        legalizeEdge(point,neighbour.getEdgeWithoutPoint(point),neighbour)
 
 def flipEdge(triangle1,triangle2,edge):
     pointP = triangle1.getThirdPoint(edge)

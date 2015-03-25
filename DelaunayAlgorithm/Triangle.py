@@ -25,17 +25,13 @@ class Triangle:
     def getPoints(self):
         return [self.p1,self.p2,self.p3]
 
-    def commonEdge(self, triangle):
-        #Recibe un segundo triangulo y devuelve la arista comun entre ambos
-        points1 = self.getPoints()
-        points2 = triangle.getPoints()
-
-        return set(points1).intersection(points2)
-
     def setNeighbours(self,n1,n2,n3):
         self.n1 = n1
         self.n2 = n2
         self.n3 = n3
+
+    def getNeighbours(self):
+        return [self.n1,self.n2,self.n3]
 
     def setPoints(self,p1,p2,p3):
         self.p1 = p1
@@ -80,6 +76,13 @@ class Triangle:
 
         return points[0]
 
+    def setNeighbourByIndex(self,index,newNeighbour):
+        if index==0:
+            self.n1 = newNeighbour
+        elif index==1:
+            self.n2 = newNeighbour
+        else:
+            self.n3 = newNeighbour
 
     def getDifferentEdges(self,newEdge):
 	edges = self.getEdges()
@@ -89,29 +92,30 @@ class Triangle:
 			edges.remove(edges[i])
 			return edges
 
+    def notifyNeighbours(self,newNeighbours):
+        neighbour1 = self.getNeighbourFromEdge(Edge(self.p1,self.p2))
+        if neighbour1 is not None:
+            neighbour1.setNeighbourByEdge(Edge(self.p1,self.p2),newNeighbours[0])
+
+        neighbour2 = self.getNeighbourFromEdge(Edge(self.p2,self.p3))
+        if neighbour2 is not None:
+            neighbour2.setNeighbourByEdge(Edge(self.p2,self.p3),newNeighbours[1])
+
+        neighbour3 = self.getNeighbourFromEdge(Edge(self.p3,self.p1))
+        if neighbour3 is not None:
+            neighbour3.setNeighbourByEdge(Edge(self.p3,self.p1),newNeighbours[2])
+
+    def setNeighbourByEdge(self,edge,newNeighbour):
+        neighbours = self.getNeighbours()
+
+        for i in range(0,len(neighbours)):
+            if neighbours[i] is not None:
+                if neighbours[i].isEdge(edge):
+                    self.setNeighbourByIndex(i,newNeighbour)
 
     def __str__(self):
         return str(self.p1) + str(self.p2) + str(self.p3)
 
-if __name__ == '__main__':
-    point1 = Point2D(50,50)
-    point2 = Point2D(50,200)
-    point3 = Point2D(400,200)
-
-    edge = Edge(point1,point2)
-    triangle = Triangle(point1,point2,point3)
-
-    #Proceso de dibujado
-    window = Tk()
-    frame = Frame(window)
-
-    frame.pack()
-
-    canvas = Canvas(window,width=600,height=400,bg="white")
-    triangle.draw(canvas)
-    canvas.pack()
-
-    window.mainloop()
 
 
 

@@ -2,7 +2,7 @@ __author__ = 'cata'
 
 from BigTriangle import bigTriangle
 from FindTriangle import findTriangle, insideTriangle
-from random import shuffle
+from RandomGenerator import randomPoints
 from Legalize import legalizeEdge
 from Point import Point2D
 from Triangle import Triangle 
@@ -16,13 +16,11 @@ def delaunay(points,canvas):
     triangulation = [baseTriangle]
 
     #Ir agregando los puntos a la triangulacion uno o uno
-    for i in range(0,2):
+    for i in range(0,len(points)):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene      
-	conT = findTriangle(triangulation,points[i])
+        conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
 	
-	conT.draw(canvas,"red")
-
         if inside:
             #Se crean tres nuevos triangulos
             newTriangle1 = Triangle(points[i],conT.p1,conT.p2)
@@ -35,6 +33,9 @@ def delaunay(points,canvas):
             newTriangle3.setNeighbours(newTriangle1,newTriangle2,conT.n3)
 
             newTriangles = [newTriangle1,newTriangle2,newTriangle3]
+
+            #Hay que notificar a los vecinos del antiguo triangulo quien queda como vecino ahora
+            conT.notifyNeighbours(newTriangles)
 
             #Hay que eliminar el triangulo antiguo
             triangulation.remove(conT)
@@ -51,54 +52,54 @@ def delaunay(points,canvas):
             #El punto se encuentra en una arista
             conT2 = conT.getNeighbourFromEdge(conEdge)
 	
-	    #Encontrar el tercer punto de los triangulos que comparten la arista que contiene al puntp	
-	    pk = conT.getThirdPoint(conEdge)
-	    pl = conT2.getThirdPoint(conEdge)
+            #Encontrar el tercer punto de los triangulos que comparten la arista que contiene al puntp
+            pk = conT.getThirdPoint(conEdge)
+            pl = conT2.getThirdPoint(conEdge)
 
-	    #Se crean los cuatro nuevos triangulos
+	        #Se crean los cuatro nuevos triangulos
             newTriangle1 = Triangle(points[i],conEdge.p2,pk)
             newTriangle2 = Triangle(points[i],pk,conEdge.p1)
             newTriangle3 = Triangle(points[i],conEdge.p1,pl)
             newTriangle4 = Triangle(points[i],pl,conEdge.p2)
 
-	    newTriangles = [newTriangle1,newTriangle2,newTriangle3,newTriangle4]
+            newTriangles = [newTriangle1,newTriangle2,newTriangle3,newTriangle4]
 
-	    #Eliminar los triangulos antiguos 
-	    triangulation.remove(conT)
+            #Eliminar los triangulos antiguos
+            triangulation.remove(conT)
             triangulation.remove(conT2)
 	    
-	    #Incluir los nuevos triangulos en la triangulacion
+	        #Incluir los nuevos triangulos en la triangulacion
             triangulation = triangulation + newTriangles
 
-	    #Legalizar los nuevos triangulos
+	        #Legalizar los nuevos triangulos
             legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1)
-	    legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
+            legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3)
             legalizeEdge(points[i],newTriangle4.getEdgeWithoutPoint(points[i]),newTriangle4)
-        
+
+
 	#Eliminar los puntos que conforman al triangulo contenedor de los puntos y las aristas que los conectan
 	#AAAAAH, como? xD
-
     return triangulation
 
 if __name__ == '__main__':
-	points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100)]
+    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100)]
 
-	window = Tk()
-	frame = Frame(window)
-	frame.pack()
+    window = Tk()
+    frame = Frame(window)
+    frame.pack()
 
-	canvas = Canvas(window,width=600,height=400,bg="white")
-	triangulation = delaunay(points,canvas)
+    canvas = Canvas(window,width=600,height=400,bg="white")
+    triangulation = delaunay(points,canvas)
 
-	for i in range(0,len(points)):
-		points[i].draw(canvas)
+    for i in range(0,len(points)):
+    	points[i].draw(canvas)
 
-	for i in range(0,len(triangulation)):
-		triangulation[i].draw(canvas,"blue")
+    for i in range(0,len(triangulation)):
+	    triangulation[i].draw(canvas,"blue")
 
-	canvas.pack()
-	window.mainloop()
+    canvas.pack()
+    window.mainloop()
 	
  
 	    
