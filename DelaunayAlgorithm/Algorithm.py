@@ -2,37 +2,62 @@ __author__ = 'cata'
 
 from BigTriangle import bigTriangle
 from FindTriangle import findTriangle, insideTriangle
-from RandomGenerator import randomPoints
 from Legalize import legalizeEdge
 from Point import Point2D
+from Edge import Edge
 from Triangle import Triangle 
 from Tkinter import *
 
 def delaunay(points,canvas):
     #Encontrar el triangulo inicial de la triangulacion
-    baseTriangle = bigTriangle(points,0.5)
+    baseTriangle = bigTriangle(points,0.3)
 
     #Incluir el triangulo ficticio en la triangulacion, se debe eliminar posteriormente
     triangulation = [baseTriangle]
 
     #Ir agregando los puntos a la triangulacion uno o uno
-    for i in range(0,4):
+    for i in range(0,3):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene      
         conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
 	
         if inside:
+            neighbours = conT.getNeighbours()
+            print "vecinos originales"
+            for j in range(0,3):
+                print neighbours[j]
+            print " "
+
             #Se crean tres nuevos triangulos
             newTriangle1 = Triangle(points[i],conT.p1,conT.p2)
             newTriangle2 = Triangle(points[i],conT.p2,conT.p3)
             newTriangle3 = Triangle(points[i],conT.p3,conT.p1)
 
             #Se asignan los vecinos correspondientes a cada triangulo, notar que van en orden antihorario
-            newTriangle1.setNeighbours(conT.n1,newTriangle2,newTriangle3)
-            newTriangle2.setNeighbours(newTriangle1,conT.n2,newTriangle3)
-            newTriangle3.setNeighbours(newTriangle1,newTriangle2,conT.n3)
+            newTriangle1.setNeighbours(conT.getNeighbourFromEdge(Edge(conT.p1,conT.p2)),newTriangle2,newTriangle3)
+            newTriangle2.setNeighbours(newTriangle1,conT.getNeighbourFromEdge(Edge(conT.p2,conT.p3)),newTriangle3)
+            newTriangle3.setNeighbours(newTriangle1,newTriangle2,conT.getNeighbourFromEdge(Edge(conT.p3,conT.p1)))
 
             newTriangles = [newTriangle1,newTriangle2,newTriangle3]
+
+            neighbours = newTriangle1.getNeighbours()
+            print "vecinos1 " + str(newTriangle1)
+            for j in range(0,3):
+                print neighbours[j]
+            print " "
+
+            neighbours = newTriangle2.getNeighbours()
+            print "vecinos2 " + str(newTriangle2)
+            for j in range(0,3):
+                print neighbours[j]
+            print " "
+
+            neighbours = newTriangle3.getNeighbours()
+            print "vecinos3 " + str(newTriangle3)
+            for j in range(0,3):
+                print neighbours[j]
+            print " "
+
 
             #Hay que notificar a los vecinos del antiguo triangulo quien queda como vecino ahora
             conT.notifyNeighbours(newTriangles)
@@ -47,6 +72,14 @@ def delaunay(points,canvas):
             legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1)
             legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3)
+
+            for j in range(0,len(triangulation)):
+                print "vecinos de " + str(triangulation[j])
+                neighbours = triangulation[j].getNeighbours()
+                for k in range(0,3):
+                    print neighbours[k]
+                print " "
+
 
         else:
             #El punto se encuentra en una arista
@@ -80,10 +113,13 @@ def delaunay(points,canvas):
 
 	#Eliminar los puntos que conforman al triangulo contenedor de los puntos y las aristas que los conectan
 	#AAAAAH, como? xD
+    #removeBigTriangle(baseTriangle,triangulation)
+
     return triangulation
 
 if __name__ == '__main__':
-    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100)]
+    #points = randomPoints(20,150,300)
+    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100)]
 
     window = Tk()
     frame = Frame(window)
@@ -98,12 +134,9 @@ if __name__ == '__main__':
     for i in range(0,len(triangulation)):
 	    triangulation[i].draw(canvas,"blue")
 
-    for i in range(0,len(triangulation)):
-        triangulation[i].printNeighbours()
-
     canvas.pack()
     window.mainloop()
-	
+
  
 	    
 
