@@ -48,7 +48,7 @@ class Triangle:
     def getNeighbourFromEdge(self,edge):
         neighbours = [self.n1,self.n2,self.n3]
 
-        for i in (0,2):
+        for i in range(0,len(neighbours)):
             if neighbours[i]!=None and neighbours[i].isEdge(edge):
                 return neighbours[i]
 
