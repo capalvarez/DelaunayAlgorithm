@@ -81,7 +81,7 @@ class Triangle:
             self.n1 = newNeighbour
         elif index==1:
             self.n2 = newNeighbour
-        else:
+        elif index==2:
             self.n3 = newNeighbour
 
     def getDifferentEdges(self,newEdge):
@@ -92,23 +92,58 @@ class Triangle:
 			edges.remove(edges[i])
 			return edges
 
+    def findNeighbour(self,possibleNeighbours):
+        for i in range(0,len(possibleNeighbours)):
+            if self.commonEdge(possibleNeighbours[i]) is not None:
+                return [self.commonEdge(possibleNeighbours[i]),possibleNeighbours[i]]
+
+        print "sali sin nada =("
+
+    def commonEdge(self,triangle):
+        points1 = self.getPoints()
+        points2 = triangle.getPoints()
+
+        commonPoints = list(set(points1) & set(points2))
+
+        #Hay exactamente dos puntos en comun entre los triangulos->tienen arista en comun
+        if len(commonPoints) == 2:
+            return Edge(commonPoints[0],commonPoints[1])
+        else:
+            return None
+
     def notifyNeighbours(self,newNeighbours):
+        print self
+        print map(lambda x: str(x),self.getNeighbours())
+        print map(lambda x: str(x),newNeighbours)
         if self.n1 is not None:
-            self.n1.setNeighbourByEdge(Edge(self.p1,self.p2),newNeighbours[0])
+            [commonEdge1,newNeighbour1] = self.n1.findNeighbour(newNeighbours)
+            print "arista comun1" + str(commonEdge1)
+            print "vecino encontrado1" + str(newNeighbour1)
+            self.n1.setNeighbourByEdge(commonEdge1,newNeighbour1)
 
         if self.n2 is not None:
-            self.n2.setNeighbourByEdge(Edge(self.p2,self.p3),newNeighbours[1])
+            print "vecino 2" + str(self.n2)
+            [commonEdge2,newNeighbour2] = self.n2.findNeighbour(newNeighbours)
+            print "arista comun2" + str(commonEdge2)
+            print "vecino encontrado2" + str(newNeighbour2)
+            self.n2.setNeighbourByEdge(commonEdge2,newNeighbour2)
 
         if self.n3 is not None:
-            self.n3.setNeighbourByEdge(Edge(self.p3,self.p1),newNeighbours[2])
+            [commonEdge3,newNeighbour3] = self.n3.findNeighbour(newNeighbours)
+            print "arista comun3" + str(commonEdge3)
+            print "vecino encontrado3" + str(newNeighbour3)
+            self.n3.setNeighbourByEdge(commonEdge3,newNeighbour3)
 
     def setNeighbourByEdge(self,edge,newNeighbour):
         neighbours = self.getNeighbours()
 
+        #print "triangulo " + str(self) + "arista " + str(edge) + "vecino a asignar " + str(newNeighbour)
+
         for i in range(0,len(neighbours)):
-            if neighbours[i] is not None:
-                if neighbours[i].isEdge(edge):
-                    self.setNeighbourByIndex(i,newNeighbour)
+            if neighbours[i] is not None and neighbours[i].isEdge(edge):
+                #print "vecino encontrado " + str(neighbours[i])
+                #print neighbours[i]
+                self.setNeighbourByIndex(i,newNeighbour)
 
     def __str__(self):
         return str(self.p1) + str(self.p2) + str(self.p3)
