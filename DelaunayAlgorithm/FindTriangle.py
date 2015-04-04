@@ -25,15 +25,30 @@ def orientTest(pA,pB,pC):
     return (pB.getX() - pA.getX())*(pC.getY() - pA.getY()) - (pC.getX() - pA.getX())*(pB.getY() - pA.getY())
 
 def findTriangle(triangles,point):
-    #Recibe un punto y una lista de triangulos, devuelve el triangulo en el que se encuentra el punto (definir que pasa
-    # si esta en una arista PENDIENTE)
-    i = 0
+    #Recibe un punto y una lista de triangulos, devuelve el triangulo en el que se encuentra el punto
 
-    while i < len(triangles):
+    for i in range(0,len(triangles)):
         if inTriangle(triangles[i],point):
             return triangles[i]
-	i = i + 1
 
+    window = Tk()
+    frame = Frame(window)
+    frame.pack()
+
+    canvas = Canvas(window,width=600,height=400,bg="white")
+
+    print "estoy retornando none"
+    print point
+    for i in range(0,len(triangles)):
+        print triangles[i]
+
+    point.draw(canvas)
+
+    for i in range(0,len(triangles)):
+	    triangles[i].draw(canvas,"blue")
+
+    canvas.pack()
+    window.mainloop()
 
 def insideTriangle(triangle,point):
     edges = triangle.getEdges()

@@ -7,6 +7,7 @@ from Point import Point2D
 from Edge import Edge
 from Triangle import Triangle 
 from Tkinter import *
+from RandomGenerator import randomPoints
 
 def delaunay(points,canvas):
     #Encontrar el triangulo inicial de la triangulacion
@@ -16,7 +17,7 @@ def delaunay(points,canvas):
     triangulation = [baseTriangle]
 
     #Ir agregando los puntos a la triangulacion uno o uno
-    for i in range(0,5):
+    for i in range(0,len(points)):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene
         conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
@@ -60,29 +61,28 @@ def delaunay(points,canvas):
             #Incluir los nuevos triangulos en la triangulacion
             triangulation = triangulation + newTriangles
 
-
-            if i == 1:
-                print "antes del flip"
-                for j in range(0,len(triangulation)):
-                    print "vecinos de " + str(triangulation[j])
-                    neighbours = triangulation[j].getNeighbours()
-                    for k in range(0,3):
-                        print neighbours[k]
-                    print " "
+            #if i == 3:
+            #    print "antes del flip"
+            #    for j in range(0,len(triangulation)):
+            #        print "vecinos de " + str(triangulation[j])
+            #        neighbours = triangulation[j].getNeighbours()
+            #        for k in range(0,3):
+            #            print neighbours[k]
+            #        print " "
 
             #Legalizar los nuevos triangulos
             legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1)
             legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3)
 
-            #if i == 1:
+            #if i == 3:
             #    print "despues del flip"
             #    for j in range(0,len(triangulation)):
             #        print "vecinos de " + str(triangulation[j])
             #        neighbours = triangulation[j].getNeighbours()
             #        for k in range(0,3):
             #            print neighbours[k]
-            #         print " "
+            #        print " "
 
 
         else:
@@ -99,12 +99,22 @@ def delaunay(points,canvas):
             newTriangle3 = Triangle(points[i],conEdge.p1,pl)
             newTriangle4 = Triangle(points[i],pl,conEdge.p2)
 
+            #Se asignan los vecinos correspondientes a cada triangulo, notar que van en orden antihorario
+            newTriangle1.setNeighbours(newTriangle4,conT.getNeighbourFromEdge(Edge(conEdge.p2,pk)),newTriangle2)
+            newTriangle2.setNeighbours(newTriangle1,conT.getNeighbourFromEdge(Edge(conEdge.p1,pk)),newTriangle3)
+            newTriangle3.setNeighbours(newTriangle4,newTriangle2,conT2.getNeighbourFromEdge(Edge(pl,conEdge.p1)))
+            newTriangle4.setNeighbours(conT2.getNeighbourFromEdge(Edge(pl,conEdge.p2)),newTriangle1,newTriangle3)
+
             newTriangles = [newTriangle1,newTriangle2,newTriangle3,newTriangle4]
 
-            #Eliminar los triangulos antiguos
+            #Hay que notificar a los vecinos de los dos triangulos contenedores que hay nuevos triangulos vecinos
+            conT.notifyNeighbours(newTriangles)
+            conT2.notifyNeighbours(newTriangles)
+
+            #Hay que eliminar los triangulos antiguos
             triangulation.remove(conT)
             triangulation.remove(conT2)
-	    
+
 	        #Incluir los nuevos triangulos en la triangulacion
             triangulation = triangulation + newTriangles
 
@@ -123,7 +133,7 @@ def delaunay(points,canvas):
 
 if __name__ == '__main__':
     #points = randomPoints(20,150,300)
-    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100)]
+    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100),Point2D(300,200),Point2D(400,100)]
 
     window = Tk()
     frame = Frame(window)
