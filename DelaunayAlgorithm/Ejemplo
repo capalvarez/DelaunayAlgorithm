@@ -82,3 +82,50 @@ def flipEdge(triangle1,triangle2,edge):
         print map(lambda x: str(x),n2T2.getNeighbours())
 
     return Edge(pointP,pointQ)
+
+
+
+
+    def bigTriangle(pointList,perc):
+    #Encargado de devolver los tres puntos que forman el triangulo inicial del algoritmo
+    (up,down,right,left) = findCorners(pointList)
+
+    x1 = right*1.5
+    y1 = up*1.5
+
+    x2 = left*0.6
+    y2 = down*0.6
+
+    leftUpPoint = Point2D(x2 - (x1 - x2)*perc, y1)
+    rightUpPoint = Point2D(x1 + (x1 - x2)*perc, y1)
+
+    upXCoord = (rightUpPoint.getX() - leftUpPoint.getX())/2
+    slope = (y1 - y2)/(leftUpPoint.getX() - x2)
+
+    downPoint = Point2D(upXCoord, y1 + slope*(upXCoord - leftUpPoint.getX()))
+
+    return Triangle(downPoint,leftUpPoint,rightUpPoint)
+
+
+    def bigTriangle(pointList,perc):
+    #Encargado de devolver los tres puntos que forman el triangulo inicial del algoritmo
+    (up,down,right,left) = findCorners(pointList)
+
+    x1 = right*1.5
+    y1 = up*1.5
+
+    x2 = left*0.6
+    y2 = down*0.6
+
+    p1 = Point2D(x1,y1)
+    p2 = Point2D(x1,y2)
+    p3 = Point2D(x2,y2)
+    p4 = Point2D(x2,y1)
+
+    t1 = Triangle(p1,p4,p3)
+    t2 = Triangle(p1,p3,p2)
+
+    t1.setNeighbours(t2,None,None)
+    t2.setNeighbours(None,None,t1)
+
+    return [t1,t2]

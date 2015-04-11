@@ -12,6 +12,9 @@ class Triangle:
         self.n2 = None
         self.n3 = None
 
+    def equals(self,other):
+        return self.p1==other.p1 and self.p2==other.p2 and self.p3==other.p3
+
     def getTriangle(self):
         return Triangle(self.p1.getPoint(),self.p2.getPoint(),self.p3.getPoint())
 
@@ -59,18 +62,21 @@ class Triangle:
 
     def getNeighbourFromEdge(self,edge):
         neighbours = [self.n1,self.n2,self.n3]
+        #print map(lambda x: str(x),neighbours)
 
         for i in range(0,len(neighbours)):
             if neighbours[i]!=None and neighbours[i].isEdge(edge):
                 return neighbours[i]
 
     def isEdge(self,edge):
+        #print "soy " + str(self) + "y la arista es "+ str(edge)
         points = self.getPoints()
 
         for i in range(0,len(points)):
             if edge.p1.equals(points[i]):
                 for j in range(0,len(points)):
                     if edge.p2.equals(points[j]):
+                        #print "es arista!"
                         return True
 
         return False

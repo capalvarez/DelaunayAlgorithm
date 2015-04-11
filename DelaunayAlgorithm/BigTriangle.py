@@ -3,6 +3,7 @@ from Point import *
 from FindTriangle import inTriangle
 from Triangle import *
 from RandomGenerator import randomPoints
+from Tkinter import *
 
 def bigTriangle(pointList,perc):
     #Encargado de devolver los tres puntos que forman el triangulo inicial del algoritmo

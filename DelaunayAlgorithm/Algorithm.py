@@ -17,12 +17,19 @@ def delaunay(points,canvas):
     triangulation = [baseTriangle]
 
     #Ir agregando los puntos a la triangulacion uno o uno
-    for i in range(0,len(points)):
+    for i in range(0,3):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene
         conT = findTriangle(triangulation,points[i])
         [inside,conEdge] = insideTriangle(conT,points[i])
 	
         if inside:
+            print "Punto agregando " + str(points[i])
+            print "Triangulo contenedor" + str(conT)
+            print "contenido actual de la triangulacion"
+            for k in range(0,len(triangulation)):
+                print triangulation[k]
+
+
             neighbours = conT.getNeighbours()
             #print "vecinos originales"
             #for j in range(0,3):
@@ -43,16 +50,20 @@ def delaunay(points,canvas):
 
             #Hay que notificar a los vecinos del antiguo triangulo quien queda como vecino ahora
 
-            if i == 1:
-                print "antes de notificar"
-                for j in range(0,len(triangulation)):
-                    print "vecinos de " + str(triangulation[j])
-                    neighbours = triangulation[j].getNeighbours()
-                    for k in range(0,3):
-                        print neighbours[k]
-                    print " "
+            #if i == 1:
+            #    print "antes de notificar"
+            #    for j in range(0,len(triangulation)):
+            #        print "vecinos de " + str(triangulation[j])
+            #        neighbours = triangulation[j].getNeighbours()
+            #        for k in range(0,3):
+            #            print neighbours[k]
+            #        print " "
 
-            #print map(lambda x: str(x),newTriangles)
+            for l in range(0,3):
+                print "Triangulo nuevo" + str(newTriangles[l])
+                print map(lambda x: str(x),newTriangles[l].getNeighbours())
+            print " "
+
             conT.notifyNeighbours(newTriangles)
 
             #Hay que eliminar el triangulo antiguo
@@ -71,11 +82,11 @@ def delaunay(points,canvas):
             #        print " "
 
             #Legalizar los nuevos triangulos
-            legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1)
-            legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2)
-            legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3)
+            legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1,triangulation)
+            legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2,triangulation)
+            legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
 
-            #if i == 3:
+            #if i == 2:
             #    print "despues del flip"
             #    for j in range(0,len(triangulation)):
             #        print "vecinos de " + str(triangulation[j])
@@ -83,6 +94,12 @@ def delaunay(points,canvas):
             #        for k in range(0,3):
             #            print neighbours[k]
             #        print " "
+            #        print " "
+
+            print "contenido actual de la triangulacion"
+            for k in range(0,len(triangulation)):
+                print triangulation[k]
+
 
 
         else:
