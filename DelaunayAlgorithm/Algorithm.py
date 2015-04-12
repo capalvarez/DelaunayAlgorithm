@@ -8,6 +8,7 @@ from Edge import Edge
 from Triangle import Triangle 
 from Tkinter import *
 from RandomGenerator import randomPoints
+from random import shuffle
 
 def delaunay(points,canvas):
     #Encontrar el triangulo inicial de la triangulacion
@@ -23,17 +24,7 @@ def delaunay(points,canvas):
         [inside,conEdge] = insideTriangle(conT,points[i])
 	
         if inside:
-            print "Punto agregando " + str(points[i])
-            print "Triangulo contenedor" + str(conT)
-            #print "contenido actual de la triangulacion"
-            #for k in range(0,len(triangulation)):
-            #    print triangulation[k]
-
             neighbours = conT.getNeighbours()
-            print "vecinos originales"
-            for j in range(0,3):
-                print neighbours[j]
-            print " "
 
             #Se crean tres nuevos triangulos
             newTriangle1 = Triangle(points[i],conT.p1,conT.p2)
@@ -48,21 +39,6 @@ def delaunay(points,canvas):
             newTriangles = [newTriangle1,newTriangle2,newTriangle3]
 
             #Hay que notificar a los vecinos del antiguo triangulo quien queda como vecino ahora
-
-            #if i == 1:
-            #    print "antes de notificar"
-            #    for j in range(0,len(triangulation)):
-            #        print "vecinos de " + str(triangulation[j])
-            #        neighbours = triangulation[j].getNeighbours()
-            #        for k in range(0,3):
-            #            print neighbours[k]
-            #        print " "
-
-            #for l in range(0,3):
-            #    print "Triangulo nuevo" + str(newTriangles[l])
-            #    print map(lambda x: str(x),newTriangles[l].getNeighbours())
-            #print " "
-
             conT.notifyNeighbours(newTriangles)
 
             #Hay que eliminar el triangulo antiguo
@@ -71,43 +47,10 @@ def delaunay(points,canvas):
             #Incluir los nuevos triangulos en la triangulacion
             triangulation = triangulation + newTriangles
 
-            #print "contenido actual de la triangulacion"
-            #for k in range(0,len(triangulation)):
-            #    print triangulation[k]
-
-            #if i == 3:
-            #    print "antes del flip"
-            #    for j in range(0,len(triangulation)):
-            #        print "vecinos de " + str(triangulation[j])
-            #        neighbours = triangulation[j].getNeighbours()
-            #        for k in range(0,3):
-            #            print neighbours[k]
-            #        print " "
-
             #Legalizar los nuevos triangulos
-            #print "triangulacion antes de legalize1"
-            #print map(lambda x: str(x),triangulation)
             legalizeEdge(points[i],newTriangle1.getEdgeWithoutPoint(points[i]),newTriangle1,triangulation)
-            #print " "
-
-            #print "triangulacion antes de legalize2"
-            #print map(lambda x: str(x),triangulation)
             legalizeEdge(points[i],newTriangle2.getEdgeWithoutPoint(points[i]),newTriangle2,triangulation)
-            #print " "
-
-            #print "triangulacion antes de legalize3"
-            #print map(lambda x: str(x),triangulation)
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
-
-            #if i == 2:
-            #    print "despues del flip"
-            #    for j in range(0,len(triangulation)):
-            #        print "vecinos de " + str(triangulation[j])
-            #        neighbours = triangulation[j].getNeighbours()
-            #        for k in range(0,3):
-            #            print neighbours[k]
-            #        print " "
-            #        print " "
 
         else:
             #El punto se encuentra en una arista
@@ -148,31 +91,21 @@ def delaunay(points,canvas):
             legalizeEdge(points[i],newTriangle3.getEdgeWithoutPoint(points[i]),newTriangle3,triangulation)
             legalizeEdge(points[i],newTriangle4.getEdgeWithoutPoint(points[i]),newTriangle4,triangulation)
 
-
-	#Eliminar los puntos que conforman al triangulo contenedor de los puntos y las aristas que los conectan
-	#AAAAAH, como? xD
-    #removeBigTriangle(baseTriangle,triangulation)
-
     return triangulation
 
 if __name__ == '__main__':
-    points = randomPoints(100,100,400)
-    #print map(lambda x: str(x),points)
-
-    #points = [Point2D(162,289), Point2D(164,157), Point2D(234,208), Point2D(219,193), Point2D(163,183), Point2D(284,274), Point2D(218,152), Point2D(161,205), Point2D(189,272), Point2D(279,160)]
-
-    #points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100),Point2D(300,200),Point2D(400,100),Point2D(400,200),
-             #Point2D(100,0),Point2D(200,0),Point2D(300,0),Point2D(400,0)]
+    #Opciones para la entrada: puntos aleatorios, grilla o grilla permutada
+    #points = randomPoints(100,100,400)
+    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100),Point2D(300,200),Point2D(400,100),Point2D(400,200),
+             Point2D(100,0),Point2D(200,0),Point2D(300,0),Point2D(400,0)]
+    #shuffle(points)
 
     window = Tk()
     frame = Frame(window)
     frame.pack()
 
-    canvas = Canvas(window,width=600,height=400,bg="white")
+    canvas = Canvas(window,width=800,height=600,bg="white")
     triangulation = delaunay(points,canvas)
-
-    #for i in range(0,5):
-    #	points[i].draw(canvas)
 
     for i in range(0,len(triangulation)):
 	    triangulation[i].draw(canvas,"blue")
@@ -180,8 +113,8 @@ if __name__ == '__main__':
     canvas.pack()
     window.mainloop()
 
- 
-	    
+
+
 
 
 

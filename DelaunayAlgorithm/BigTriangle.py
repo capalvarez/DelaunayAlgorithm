@@ -47,31 +47,4 @@ def findCorners(pointList):
 
     return (up, down, right, left)
 
-def removeBigTriangle(bigTriangle,triangulation):
-    #Ir punto a pu  nto del gran triangulo (?)
-    return
-
-if __name__ == '__main__':
-    points = randomPoints(20,50,300)
-    #points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100)]
-
-    window = Tk()
-    frame = Frame(window)
-    frame.pack()
-
-    canvas = Canvas(window,width=600,height=400,bg="white")
-    triangulation = [bigTriangle(points,0.5)]
-
-    for i in range(0,len(points)):
-    	points[i].draw(canvas)
-
-    for i in range(0,len(triangulation)):
-	    triangulation[i].draw(canvas,"blue")
-
-    for i in range(0,len(points)):
-        print inTriangle(triangulation[0],points[i])
-
-    canvas.pack()
-    window.mainloop()
-
 
