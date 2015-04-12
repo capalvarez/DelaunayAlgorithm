@@ -22,3 +22,7 @@ class Point2D:
 
     def draw(self,canvas):
         canvas.create_oval(self.x,self.y,self.x + 5, self.y + 5, fill = "black")
+
+    def setPoint(self,otherP):
+        self.x = otherP.x
+        self.y = otherP.y

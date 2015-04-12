@@ -34,6 +34,21 @@ class Triangle:
         self.n2 = n2
         self.n3 = n3
 
+    def setNeighboursPoints(self,n1,n2,n3):
+        if self.n1 is not None:
+            self.n1.setPointsByTriangle(n1)
+
+        if self.n2 is not None:
+            self.n2.setPointsByTriangle(n2)
+
+        if self.n3 is not None:
+            self.n3.setPointsByTriangle(n3)
+
+    def setPointsByTriangle(self,otherT):
+        self.p1.setPoint(otherT.p1)
+        self.p2.setPoint(otherT.p2)
+        self.p3.setPoint(otherT.p3)
+
     def getNeighbours(self):
         return [self.n1,self.n2,self.n3]
 
@@ -121,6 +136,9 @@ class Triangle:
 			return edges
 
     def findNeighbour(self,possibleNeighbours):
+        print map(lambda x: str(x),possibleNeighbours)
+        print "findNeighbour, quien soy" + str(self)
+
         for i in range(0,len(possibleNeighbours)):
             if self.commonEdge(possibleNeighbours[i]) is not None:
                 return [self.commonEdge(possibleNeighbours[i]),possibleNeighbours[i]]
