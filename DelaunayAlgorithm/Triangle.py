@@ -36,18 +36,26 @@ class Triangle:
 
     def setNeighboursPoints(self,n1,n2,n3):
         if self.n1 is not None:
+            print "vecino a asignar" + str(n1)
             self.n1.setPointsByTriangle(n1)
+            print "lo que quedo" + str(self.n1)
 
         if self.n2 is not None:
             self.n2.setPointsByTriangle(n2)
+            print "lo que quedo despues de n2" + str(self.n1)
 
         if self.n3 is not None:
             self.n3.setPointsByTriangle(n3)
+            print "lo que quedo despues de n3" + str(self.n1)
+
+        print "resultados de la asignacion"
+        print map(lambda x: str(x),self.getNeighbours())
+
 
     def setPointsByTriangle(self,otherT):
-        self.p1.setPoint(otherT.p1)
-        self.p2.setPoint(otherT.p2)
-        self.p3.setPoint(otherT.p3)
+        self.p1 = otherT.p1
+        self.p2 = otherT.p2
+        self.p3 = otherT.p3
 
     def getNeighbours(self):
         return [self.n1,self.n2,self.n3]
@@ -136,8 +144,9 @@ class Triangle:
 			return edges
 
     def findNeighbour(self,possibleNeighbours):
-        print map(lambda x: str(x),possibleNeighbours)
         print "findNeighbour, quien soy" + str(self)
+        print "posibles vecinos"
+        print map(lambda x: str(x),possibleNeighbours)
 
         for i in range(0,len(possibleNeighbours)):
             if self.commonEdge(possibleNeighbours[i]) is not None:
@@ -166,12 +175,18 @@ class Triangle:
         #print map(lambda x: str(x),self.getNeighbours())
         #print map(lambda x: str(x),newNeighbours)
         if self.n1 is not None:
+            print "n1" + str(self.n1)
+            print "vecinos de n1"
+            print map(lambda x: str(x),self.n1.getNeighbours())
             [commonEdge1,newNeighbour1] = self.n1.findNeighbour(newNeighbours)
             #print "arista comun1" + str(commonEdge1)
             #print "vecino encontrado1" + str(newNeighbour1)
             self.n1.setNeighbourByEdge(commonEdge1,newNeighbour1)
 
         if self.n2 is not None:
+            print "n2" + str(self.n2)
+            print "vecinos de n2"
+            print map(lambda x: str(x),self.n2.getNeighbours())
             #print "vecino 2" + str(self.n2)
             [commonEdge2,newNeighbour2] = self.n2.findNeighbour(newNeighbours)
             #print "arista comun2" + str(commonEdge2)
@@ -179,6 +194,9 @@ class Triangle:
             self.n2.setNeighbourByEdge(commonEdge2,newNeighbour2)
 
         if self.n3 is not None:
+            print "n3" + str(self.n3)
+            print "vecinos de n3"
+            print map(lambda x: str(x),self.n3.getNeighbours())
             #print "vecino 3" + str(self.n3)
             [commonEdge3,newNeighbour3] = self.n3.findNeighbour(newNeighbours)
             #print "arista comun3" + str(commonEdge3)

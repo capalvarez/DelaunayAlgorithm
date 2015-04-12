@@ -24,16 +24,16 @@ def delaunay(points,canvas):
 	
         if inside:
             print "Punto agregando " + str(points[i])
-            #print "Triangulo contenedor" + str(conT)
+            print "Triangulo contenedor" + str(conT)
             #print "contenido actual de la triangulacion"
             #for k in range(0,len(triangulation)):
             #    print triangulation[k]
 
             neighbours = conT.getNeighbours()
-            #print "vecinos originales"
-            #for j in range(0,3):
-            #    print neighbours[j]
-            #print " "
+            print "vecinos originales"
+            for j in range(0,3):
+                print neighbours[j]
+            print " "
 
             #Se crean tres nuevos triangulos
             newTriangle1 = Triangle(points[i],conT.p1,conT.p2)
@@ -156,8 +156,10 @@ def delaunay(points,canvas):
     return triangulation
 
 if __name__ == '__main__':
-    points = randomPoints(10,150,300)
-    print map(lambda x: str(x),points)
+    points = randomPoints(100,100,400)
+    #print map(lambda x: str(x),points)
+
+    #points = [Point2D(162,289), Point2D(164,157), Point2D(234,208), Point2D(219,193), Point2D(163,183), Point2D(284,274), Point2D(218,152), Point2D(161,205), Point2D(189,272), Point2D(279,160)]
 
     #points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100),Point2D(300,200),Point2D(400,100),Point2D(400,200),
              #Point2D(100,0),Point2D(200,0),Point2D(300,0),Point2D(400,0)]
@@ -169,8 +171,8 @@ if __name__ == '__main__':
     canvas = Canvas(window,width=600,height=400,bg="white")
     triangulation = delaunay(points,canvas)
 
-    #for i in range(0,len(points)):
-    #S	points[i].draw(canvas)
+    #for i in range(0,5):
+    #	points[i].draw(canvas)
 
     for i in range(0,len(triangulation)):
 	    triangulation[i].draw(canvas,"blue")
