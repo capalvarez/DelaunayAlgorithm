@@ -1,7 +1,7 @@
 __author__ = 'cata'
 
 from BigTriangle import bigTriangle
-from FindTriangle import findTriangle, insideTriangle
+from FindTriangle import findTriangleJumpWalk, insideTriangle,findTriangleLineal
 from Legalize import legalizeEdge
 from Point import Point2D
 from Edge import Edge
@@ -20,7 +20,13 @@ def delaunay(points,canvas):
     #Ir agregando los puntos a la triangulacion uno o uno
     for i in range(0,len(points)):
         #Tomar un nuevo punto y encontrar el triangulo que lo contiene
-        conT = findTriangle(triangulation,points[i])
+
+        #Version lineal
+        #conT = findTriangleLineal(triangulation,points[i])
+
+        #Version con walk and jump
+        conT = findTriangleJumpWalk(triangulation,points[i])
+
         [inside,conEdge] = insideTriangle(conT,points[i])
 	
         if inside:
@@ -95,9 +101,9 @@ def delaunay(points,canvas):
 
 if __name__ == '__main__':
     #Opciones para la entrada: puntos aleatorios, grilla o grilla permutada
-    #points = randomPoints(100,100,400)
-    points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100),Point2D(300,200),Point2D(400,100),Point2D(400,200),
-             Point2D(100,0),Point2D(200,0),Point2D(300,0),Point2D(400,0)]
+    points = randomPoints(100,100,400)
+    #points =[Point2D(100,100),Point2D(100,200),Point2D(200,200),Point2D(200,100),Point2D(300,100),Point2D(300,200),Point2D(400,100),Point2D(400,200),
+    #         Point2D(100,0),Point2D(200,0),Point2D(300,0),Point2D(400,0)]
     #shuffle(points)
 
     window = Tk()
