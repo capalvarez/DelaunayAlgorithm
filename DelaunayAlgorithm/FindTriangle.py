@@ -48,20 +48,28 @@ def findTriangleJumpWalk(triangles,point):
     #Etapa de inicializacion, buscamos un triangulo por el cual pase el segmento que une q y point
     if orientTest(right,q,point)<0:
         while orientTest(left,q,point)<0:
+            #Si por mala suerte nos salimos del triangulo contenedor, tenemos que partir de nuevo
+            if t is None:
+                return findTriangleJumpWalk(triangles,point)
+
             right = left
             t = t.getNeighbourFromEdge(Edge(q,left))
 
-            #No podemos avanzar hacia afuera del triangulo contenedor
+            #Para el caso de que acabo de salirme del triangulo contenedor, en la proxima iteracion saldre
             if t is None:
                 continue
 
             left = t.getThirdPoint(Edge(q,right))
     else:
         while True:
+            #Si por mala suerte nos salimos del triangulo contenedor, tenemos que partir de nuevo
+            if t is None:
+                return findTriangleJumpWalk(triangles,point)
+
             left = right
             t = t.getNeighbourFromEdge(Edge(q,right))
 
-            #No podemos avanzar hacia afuera del triangulo contenedor
+            #Para el caso de que acabo de salirme del triangulo contenedor, en la proxima iteracion saldre
             if t is None:
                 continue
 
@@ -72,8 +80,13 @@ def findTriangleJumpWalk(triangles,point):
 
     #Comenzamos la caminata
     while orientTest(point,right,left)<0:
+        #Si por mala suerte nos salimos del triangulo contenedor, tenemos que partir de nuevo
+        if t is None:
+            return findTriangleJumpWalk(triangles,point)
+
         t = t.getNeighbourFromEdge(Edge(right,left))
 
+        #Para el caso de que acabo de salirme del triangulo contenedor, en la proxima iteracion saldre
         if t is None:
             continue
 
