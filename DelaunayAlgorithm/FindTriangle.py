@@ -97,7 +97,12 @@ def findTriangleJumpWalk(triangles,point):
         else:
             left = s
 
-    return t
+      #Antes de empezar la busqueda, verificamos no haber tenido la suerte de encontrar de inmediato el triangulo buscado
+    if inTriangle(t,point):
+        return t
+    else:
+        return findTriangleJumpWalk(triangles,point)
+
 
 def insideTriangle(triangle,point):
     edges = triangle.getEdges()

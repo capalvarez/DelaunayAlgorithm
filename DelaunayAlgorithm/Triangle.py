@@ -147,7 +147,7 @@ class Triangle:
                     commonPoints = commonPoints + [points1[i]]
 
         #Si hay exactamente dos puntos en comun entre los triangulos, entonces tienen arista en comun
-        if len(commonPoints) == 2:
+        if len(commonPoints) > 1:
             return Edge(commonPoints[0],commonPoints[1])
         else:
             return None
